@@ -4,7 +4,6 @@ import javax.inject.Singleton
 
 import acyclic.file
 import indicator.dao.IndicatorDao
-import indicator.models.EconomicProperty
 import indicator.rw.base.{MultiQueryInfo, RWComponentWithFuture}
 import indicator.utils.{SelectCommon, UbwHelper}
 import io.circe._
@@ -131,14 +130,14 @@ class 账号管理 @javax.inject.Inject() (
 
       val sourceForeign = MultiQueryInfo("用户所属数据源", "ID", "ID", (id: Long) => {
         val iQuery = for {
-          accountRoleIn <- securityDao.accountRoleDao.tableQuery.in
-          accountRole <- securityDao.accountRoleDao.tableQuery.out
-          account <- securityDao.accountDao.tableQuery.out if (account.id === accountRole.account) && (account.id === id)
+          economicSourceAccountIn <- economicSourceAccountDao.tableQuery.in
+          economicSourceAccount <- economicSourceAccountDao.tableQuery.out
+          account <- securityDao.accountDao.tableQuery.out if (account.id === economicSourceAccount.account) && (account.id === id)
         } yield {
           List(
-            accountRole.id setTo accountRoleIn.id.columnIn(In.primaryKey, In.autoInc) as "ID",
-            accountRole.account setTo accountRoleIn.account as masterForeign,
-            accountRole.role setTo accountRoleIn.role as slaveryForeign
+            economicSourceAccount.id setTo economicSourceAccountIn.id.columnIn(In.autoInc, In.primaryKey) as "ID",
+            economicSourceAccount.account setTo economicSourceAccountIn.account as masterForeign,
+            economicSourceAccount.source setTo economicSourceAccountIn.source as slaveryForeign
           )
         }
         QueryJsonInfo(iQuery._1.result, iQuery._2)
@@ -146,18 +145,18 @@ class 账号管理 @javax.inject.Inject() (
         import net.scalax.ubw.shaper._
         import poiOperation._
         (for {
-          role <- securityDao.securityRoleDao.tableQuery.ubw
+          source <- economicSourceDao.tableQuery.ubw
         } yield {
           List(
-            role.id as "ID" order true,
-            role.name as "角色标识" order true,
-            role.roleName as "角色名称" order true,
-            role.describe as "角色描述"
+            source.id as "ID" order true,
+            source.name as "数据源标识" order true,
+            source.sourceName as "数据源名称" order true,
+            source.describe as "数据源描述"
           )
         }).result
       })
 
-      roleForeign :: authForeigns.toList
+      sourceForeign :: roleForeign :: authForeigns.toList
     }
   }
 
