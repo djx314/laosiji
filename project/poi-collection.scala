@@ -9,7 +9,7 @@ object `poi-collection` extends Build {
 """
   println(initPrintln)
 
-  lazy val `poi-collection` = (project in file("."))
+  lazy val laosiji = (project in file("."))
   //common settings
   .settings(CustomSettings.customSettings: _*)
   .settings(
