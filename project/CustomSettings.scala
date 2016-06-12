@@ -5,13 +5,13 @@ import Keys._
 
 object CustomSettings {
   
-  def customSettings = scalaSettings ++ resolversSettings ++ extAlias ++ graphSettings
+  def customSettings = scalaSettings ++ resolversSettings ++ extAlias
   
   def scalaSettings =
     Seq(
       scalaVersion := "2.11.7",
       scalacOptions ++= Seq("-feature", "-deprecation"),
-      addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion.full)
+      addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0"cross CrossVersion.full)
     )
   
   def resolversSettings =
@@ -53,7 +53,5 @@ object CustomSettings {
         |git config --global core.autocrlf true;
         |git config core.editor gedit
       """.stripMargin
-
-  val graphSettings = net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 }

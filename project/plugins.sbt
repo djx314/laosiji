@@ -7,8 +7,6 @@ resolvers ++= Seq(
 
 externalResolvers := Resolver.withDefaultResolvers(resolvers.value, mavenCentral = false)
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.5")
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
-
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.5")
